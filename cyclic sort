@@ -1,0 +1,25 @@
+#include <vector>
+#include <algorithm>
+
+void cyclicSort(std::vector<int>& nums) {
+    int i = 0;
+    while (i < nums.size()) {
+        int correctIndex = nums[i] - 1;
+        if (nums[i] != nums[correctIndex]) {
+            std::swap(nums[i], nums[correctIndex]);
+        } else {
+            i++;
+        }
+    }
+}
+
+int main() {
+    std::vector<int> nums = {3, 1, 5, 4, 2};
+    cyclicSort(nums);
+    
+    // Now nums should be sorted: [1, 2, 3, 4, 5]
+    for (int num : nums) {
+        std::cout << num << " ";
+    }
+    return 0;
+}
