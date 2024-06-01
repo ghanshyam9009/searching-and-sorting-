@@ -48,3 +48,50 @@ int main()
 }
 
 
+
+// approach 2 (pivot element )
+
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        int pivot, s=0,e=nums.size()-1;
+        int mid = s+(e-s)/2;
+
+        while(s<=e){
+            if(nums[mid]==target){
+                return mid;
+            }
+
+            else if(nums[0]<=nums[mid]){
+                s = mid+1;
+            }
+            else{
+                e=mid-1;
+            }
+
+            mid= s+(e-s)/2;
+        }
+        pivot= e;
+
+        if( target >= nums[0] && target <= nums[pivot] )
+        {
+            e = pivot;
+            s = 0;
+        }
+        else 
+        {
+            s = pivot;
+            e = nums.size()-1;
+        }
+        while( s <= e ){
+            mid = s + ( e - s ) / 2 ;
+            if(nums[mid] == target ) return mid;
+
+            else if ( nums[mid] < target ) s = mid+1;
+            else e = mid -1;
+        }
+        return -1;
+        
+    }
+};
+
