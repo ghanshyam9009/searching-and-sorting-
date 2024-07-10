@@ -1,0 +1,31 @@
+Sample Input 1:
+1
+5
+10 24 5 90 4 
+14 2 32 5 6 
+Sample output 1:
+74
+Explanation of Sample output 1:
+The best way to pair the elements is (4, 2), (5, 5), (10,6), (24, 14), (90, 32). The sum of the absolute difference between pairs is  2 + 0 + 4 + 10 + 58 = 74 
+
+
+
+class Solution {
+public:
+    vector<vector<int>> minimumAbsDifference(vector<int>& arr) {
+      vector<vector<int>> ans;
+        sort(arr.begin(), arr.end());
+        int min_diff = arr[1] - arr[0]; // Initialize minimum difference to be between the first two elements
+        for (int i = 1; i < arr.size(); i++) { // Start from the second element
+            int diff = arr[i] - arr[i-1];
+            if (diff < min_diff) { // If the current difference is smaller than the minimum difference so far
+                min_diff = diff; // Update the minimum difference
+                ans.clear(); // Clear the result vector since we have a new minimum difference
+            }
+            if (diff == min_diff) { // If the current difference is equal to the minimum difference
+                ans.push_back({arr[i-1], arr[i]}); // Add the pair (arr[i-1], arr[i]) to the result vector
+            }
+        }
+        return ans;
+    }
+};
