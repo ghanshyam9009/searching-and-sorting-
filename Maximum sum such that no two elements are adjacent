@@ -1,0 +1,92 @@
+Input: arr[] = {5, 5, 10, 100, 10, 5}
+Output: 110
+Explanation: Pick the subsequence {5, 100, 5}.
+The sum is 110 and no two elements are adjacent. This is the highest possible sum.
+
+Input: arr[] = {3, 2, 7, 10}
+Output: 13
+Explanation: The subsequence is {3, 10}. This gives sum = 13.
+This is the highest possible sum of a subsequence following the given criteria
+
+Input: arr[] = {3, 2, 5, 10, 7}
+Output: 15
+Explanation: Pick the subsequence {3, 5, 7}. The sum is 15.
+
+
+
+
+// C++ code to implement the approach
+
+#include <bits/stdc++.h>
+using namespace std;
+
+// Function to find the maximum sum
+int rec(vector<int>& nums, int idx)
+{
+	if (idx >= nums.size())
+		return 0;
+	return max(nums[idx] + rec(nums, idx + 2),
+			rec(nums, idx + 1));
+}
+
+int findMaxSum(vector<int> arr, int N)
+{
+	return rec(arr, 0);
+}
+
+// Driver Code
+int main()
+{
+	// Creating the array
+	vector<int> arr = { 5, 5, 10, 100, 10, 5 };
+	int N = arr.size();
+
+	// Function call
+	cout << findMaxSum(arr, N) << endl;
+	return 0;
+}
+
+
+
+
+
+
+// C++ code to implement the approach
+
+#include <bits/stdc++.h>
+using namespace std;
+
+// Function to find the maximum sum
+
+int rec(vector<int>& nums, int idx, vector<int>& dp)
+{
+	if (idx >= nums.size())
+		return 0;
+	if (dp[idx] != -1)
+		return dp[idx];
+	return dp[idx]
+		= max(rec(nums, idx + 1, dp),
+				nums[idx] + rec(nums, idx + 2, dp));
+}
+int findMaxSum(vector<int>& nums, int N)
+{
+	vector<int> dp(N + 1, -1);
+	return rec(nums, 0, dp);
+}
+
+// Driver Code
+int main()
+{
+	// Creating the array
+	vector<int> arr = { 5, 5, 10, 100, 10, 5 };
+	int N = arr.size();
+
+	// Function call
+	cout << findMaxSum(arr, N) << endl;
+	return 0;
+}
+
+
+
+Time complexity: O(N) (recursion)
+Space complexity: O(N)+O(N), one is recursive stack space and another O(N) is for dp array.
