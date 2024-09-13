@@ -1,0 +1,115 @@
+Input: arr[]  = {2, 4, 8, 10, 12, 14}
+Output: 6
+
+Input: arr[]  = {1, 6, 11, 16, 21, 31};
+Output: 26
+
+
+#include<iostream> 
+#include<bits/stdc++.h> 
+
+using namespace std; 
+
+int findMissing(int arr[], int n) 
+{ 
+	int a,d,l,s,i,sum=0,missingnumber; 
+	a=arr[0]; 
+	l=arr[n-1]; 
+
+
+	/* Taking the sum of all the elements of the array 
+	including the missing element using formulae 
+	S(n) = n/2 (a+l) where a is the first element 
+	and l is the last element */
+	
+	if((a+l)%2==0) /* ensuring this as n/2(a+l) and (a+l)/2 
+					would give different values programmatically */
+	{ 
+		s = (a+l)/2; 
+		s = s*(n+1); 
+	} 
+	else
+	{ 
+		s = (n+1)/2; 
+		s = (a+l)*s; 
+
+	} 
+	
+	// Taking the sum of all the elements of the 
+	// array excluding the missing element 
+	
+	for(i=0;i<=n-1;i++) 
+	{ 
+		sum = sum + arr[i]; 
+	} 
+
+	missingnumber=s-sum; 
+
+	return missingnumber; 
+
+} 
+
+// Driver Code 
+int main() 
+{ 
+	int arr[] = {2, 4, 8, 10, 12, 14}; 
+	int n = sizeof(arr) / sizeof(arr[0]); 
+	cout << "The missing element is "
+		<< findMissing(arr, n); 
+	return 0; 
+} 
+
+
+
+
+
+
+
+
+#include<iostream> 
+using namespace std;
+
+#define INT_MAX 2147483647; 
+class GFG 
+{ 
+	
+public:int findMissingUtil(int arr[], int low, 
+						int high, int diff) 
+{	 
+	// Find index of middle element 
+	int mid; 
+	while (low <= high) 
+	{	 
+		mid = (low + high) / 2; 
+		if ((arr[mid] - arr[0]) / diff == mid) 
+			low = mid + 1; 
+		else
+
+			high = mid - 1; 
+	} 
+	return arr[high] + diff; 
+} 
+
+
+int findMissing(int arr[], int n) 
+{
+	int diff = (arr[n - 1] - arr[0]) / n; 
+	return findMissingUtil(arr, 0, n - 1, diff); 
+} 
+}; 
+
+// Driver Code 
+int main() 
+{ 
+	GFG g; 
+	int arr[] = {2, 4, 8, 10, 12, 14}; 
+	int n = sizeof(arr) / sizeof(arr[0]); 
+	cout << "The missing element is "
+		<< g.findMissing(arr, n); 
+	return 0; 
+} 
+
+
+
+
+
