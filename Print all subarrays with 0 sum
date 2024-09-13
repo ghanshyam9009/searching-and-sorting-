@@ -1,0 +1,145 @@
+Input: arr = [6, 3, -1, -3, 4, -2, 2, 4, 6, -12, -7]
+Output:
+
+Subarray found from Index 2 to 4
+Subarray found from Index 2 to 6
+Subarray found from Index 5 to 6
+Subarray found from Index 6 to 9
+Subarray found from Index 0 to 10
+Input: arr = [1, 2, -3, 3, -1, -1]
+Output:
+
+Subarray found from Index 0 to 2
+Subarray found from Index 2 to 3
+Subarray found from Index 3 to 5
+
+
+
+
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+using namespace std;
+
+
+vector<pair<int, int>> findSubArrays(int arr[], int n) {
+    unordered_map<int, vector<int>> map;  // To store the prefix sums and their indices
+    vector<pair<int, int>> result;        // To store the subarray start and end indices
+    int sum = 0;                          // To maintain the sum of elements so far
+
+    for (int i = 0; i < n; i++) {
+        sum += arr[i];  // Add current element to sum
+
+        if (sum == 0)   // If sum is 0, subarray starts from index 0 to i
+            result.push_back({0, i});
+
+        // If sum already exists in the map, it means there exists a subarray with 0 sum
+        if (map.find(sum) != map.end()) {
+            for (int startIdx : map[sum])
+                result.push_back({startIdx + 1, i});
+        }
+
+        // Store the current index for the current sum in the map
+        map[sum].push_back(i);
+    }
+
+    return result;
+}
+
+// Utility function to print all subarrays with sum 0
+void printSubarrays(const vector<pair<int, int>>& subarrays) {
+    if (subarrays.empty()) {
+        cout << "No subarray with sum 0 exists" << endl;
+    } else {
+        for (const auto& [start, end] : subarrays) {
+            cout << "Subarray found from Index " << start << " to " << end << endl;
+        }
+    }
+}
+
+// Driver code
+int main() {
+    int arr[] = {6, 3, -1, -3, 4, -2, 2, 4, 6, -12, -7};
+    int n = sizeof(arr) / sizeof(arr[0]);
+
+    vector<pair<int, int>> subarrays = findSubArrays(arr, n);
+    printSubarrays(subarrays);
+
+    return 0;
+}
+
+
+
+
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+using namespace std;
+
+// Function to find all subarrays in the array which have a sum of 0
+vector<vector<int>> findSubArrays(int arr[], int n) {
+    unordered_map<int, vector<int>> map;  // To store the prefix sums and their indices
+    vector<vector<int>> result;           // To store the subarrays with sum 0
+    int sum = 0;                          // To maintain the sum of elements so far
+
+    for (int i = 0; i < n; i++) {
+        sum += arr[i];  // Add current element to sum
+
+        // If sum is 0, subarray starts from index 0 to i
+        if (sum == 0) {
+            vector<int> subarray(arr, arr + i + 1);  // Create subarray from 0 to i
+            result.push_back(subarray);
+        }
+
+        // If sum already exists in the map, it means there exists a subarray with 0 sum
+        if (map.find(sum) != map.end()) {
+            for (int startIdx : map[sum]) {
+                vector<int> subarray(arr + startIdx + 1, arr + i + 1);  // Create subarray from startIdx + 1 to i
+                result.push_back(subarray);
+            }
+        }
+
+        // Store the current index for the current sum in the map
+        map[sum].push_back(i);
+    }
+
+    return result;
+}
+
+// Utility function to print all subarrays with sum 0
+void printSubarrays(const vector<vector<int>>& subarrays) {
+    if (subarrays.empty()) {
+        cout << "No subarray with sum 0 exists" << endl;
+    } else {
+        for (const auto& subarray : subarrays) {
+            cout << "Subarray with sum 0: ";
+            for (int num : subarray) {
+                cout << num << " ";
+            }
+            cout << endl;
+        }
+    }
+}
+
+// Driver code
+int main() {
+    int arr[] = {6, 3, -1, -3, 
+
+
+
+
+
+
+Step-by-Step Execution
+Index i	arr[i]	sum Calculation	Condition Check (sum == 0 or sum in map)	Action	map Updates	result Updates
+0	6	sum = 6	No	None	map[6] = [0]	No update
+1	3	sum = 9	No	None	map[9] = [1]	No update
+2	-1	sum = 8	No	None	map[8] = [2]	No update
+3	-3	sum = 5	No	None	map[5] = [3]	No update
+4	4	sum = 9	Yes (sum = 9 in map)	Add subarray from map[9]	map[9] = [1, 4]	Subarray (2, 4)
+5	-2	sum = 7	No	None	map[7] = [5]	No update
+6	2	sum = 9	Yes (sum = 9 in map)	Add subarrays from map[9]	map[9] = [1, 4, 6]	Subarrays (2, 6), (5, 6)
+7	4	sum = 11	No	None	map[11] = [7]	No update
+8	6	sum = 17	No	None	map[17] = [8]	No update
+9	-12	sum = 5	Yes (sum = 5 in map)	Add subarray from map[5]	map[5] = [3, 9]	Subarray (4, 9)
+10	-7	sum = -2	No	None	map[-2] = [10]	No update
