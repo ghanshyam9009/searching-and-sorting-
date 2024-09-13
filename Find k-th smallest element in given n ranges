@@ -1,0 +1,75 @@
+Input : arr[] = {{1, 4}, {6, 8}}
+        queries[] = {2, 6, 10};
+Output : 2
+         7
+        -1
+After combining the given ranges, the numbers
+become 1 2 3 4 6 7 8. As here 2nd element is 2,
+so we print 2. As 6th element is 7, so we print
+7 and as 10th element doesn't exist, so we
+print -1.
+
+Input : arr[] = {{2, 6}, {5, 7}}
+        queries[] = {5, 8};
+Output : 6
+        -1
+After combining the given ranges, the numbers 
+become 2 3 4 5 6 7. As here 5th element is 6, 
+so we print 6 and as 8th element doesn't exist, 
+so we print -1.
+
+
+
+
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+// Function to merge overlapping ranges
+vector<pair<int, int>> mergeRanges(vector<pair<int, int>>& ranges) {
+    // Sort the ranges based on their start values
+    sort(ranges.begin(), ranges.end());
+
+    vector<pair<int, int>> merged;
+    merged.push_back(ranges[0]);
+
+    for (int i = 1; i < ranges.size(); i++) {
+        if (merged.back().second >= ranges[i].first) {
+            // If ranges overlap, merge them
+            merged.back().second = max(merged.back().second, ranges[i].second);
+        } else {
+            // If they don't overlap, add a new range to the result
+            merged.push_back(ranges[i]);
+        }
+    }
+
+    return merged;
+}
+
+// Function to find the k-th smallest element in merged ranges
+int findKthSmallest(vector<pair<int, int>>& mergedRanges, int k) {
+    for (const auto& range : mergedRanges) {
+        int rangeSize = range.second - range.first + 1;
+        if (k <= rangeSize) {
+            return range.first + k - 1;  // k-th element is within this range
+        }
+        k -= rangeSize;  // Move to the next range
+    }
+    return -1;  // If k is out of bounds (should not happen with valid input)
+}
+
+int main() {
+    vector<pair<int, int>> ranges = {{1, 4}, {6, 8}, {2, 4}};
+    int k = 5;
+
+    // Merge overlapping ranges
+    vector<pair<int, int>> mergedRanges = mergeRanges(ranges);
+
+    // Find the k-th smallest element
+    int result = findKthSmallest(mergedRanges, k);
+    cout << "The " << k << "-th smallest element is: " << result << endl;
+
+    return 0;
+}
